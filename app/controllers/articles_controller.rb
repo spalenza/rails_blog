@@ -1,10 +1,10 @@
 class ArticlesController < ApplicationController
   before_filter :authenticate, :except => [:index, :show, :notify_friend]
-  
+
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+    @articles = Article.first(5)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,7 +82,7 @@ class ArticlesController < ApplicationController
       format.json { head :ok }
     end
   end
-  
+
   def notify_friend
     @article = Article.find(params[:id])
     Notifier.email_friend(@article, params[:name], params[:email]).deliver
